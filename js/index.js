@@ -311,16 +311,7 @@ const json=JSON.stringify(Object.fromEntries(formData.entries()));
     }
 
 
-    // fetch
-//     fetch('https://jsonplaceholder.typicode.com/posts', {
-//         method:'POST',
-//         body:JSON.stringify({name:"ALEX"}),
-//         headers: {
-//             'Content-type':'application/json'
-//         }
-//     })
-//   .then((response) => response.json())
-//   .then((json) => console.log(json));
+    
 
 // Slider
 
@@ -337,13 +328,22 @@ const slides = document.querySelectorAll('.offer__slide'),
     width = window.getComputedStyle(slidesWrapper).width,
     slidesField = document.querySelector('.offer__slider-inner');
 
-if (slides.length < 10) {
-    total.textContent = `0${slides.length}`;
-    current.textContent =  `0${slideIndex}`;
-} else {
-    total.textContent = slides.length;
-    current.textContent =  slideIndex;
-}
+    function contolSlides() {
+        if (slides.length < 10) {
+            total.textContent = `0${slides.length}`;
+            current.textContent =  `0${slideIndex}`;
+        } else {
+            total.textContent = slides.length;
+            current.textContent =  slideIndex;
+        }   
+    }
+
+    function controlDots (){
+        dots.forEach(dot => dot.style.opacity = ".5");
+        dots[slideIndex-1].style.opacity = 1;
+    }
+
+
 
 slidesField.style.width = 100 * slides.length + '%';
 slidesField.style.display = 'flex';
@@ -371,7 +371,7 @@ indicators.style.cssText = `
     margin-right: 15%;
     margin-left: 15%;
     list-style: none;
-`; // Если хотите - добавьте в стили, но иногда у нас нет доступа к стилям
+`; 
 slider.append(indicators);
 
 for (let i = 0; i < slides.length; i++) {
@@ -414,15 +414,11 @@ next.addEventListener('click', () => {
         slideIndex++;
     }
 
-    if (slides.length < 10) {
-        current.textContent =  `0${slideIndex}`;
-    } else {
-        current.textContent =  slideIndex;
-    }
-
-    dots.forEach(dot => dot.style.opacity = ".5");
-    dots[slideIndex-1].style.opacity = 1;
+    
+    contolSlides();
+controlDots();
 });
+
 
 prev.addEventListener('click', () => {
     if (offset == 0) {
@@ -439,15 +435,12 @@ prev.addEventListener('click', () => {
         slideIndex--;
     }
 
-    if (slides.length < 10) {
-        current.textContent =  `0${slideIndex}`;
-    } else {
-        current.textContent =  slideIndex;
-    }
-
-    dots.forEach(dot => dot.style.opacity = ".5");
-    dots[slideIndex-1].style.opacity = 1;
+   
+    contolSlides();
+controlDots();
 });
+
+
 
 dots.forEach(dot => {
     dot.addEventListener('click', (e) => {
@@ -458,14 +451,9 @@ dots.forEach(dot => {
 
         slidesField.style.transform = `translateX(-${offset}px)`;
 
-        if (slides.length < 10) {
-            current.textContent =  `0${slideIndex}`;
-        } else {
-            current.textContent =  slideIndex;
-        }
-
-        dots.forEach(dot => dot.style.opacity = ".5");
-        dots[slideIndex-1].style.opacity = 1;
+       
     });
+    contolSlides();
+    controlDots();
 });
 });
